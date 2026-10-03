@@ -1,71 +1,107 @@
 # Summary — Epistemic Calibration Audit under Pressure
 
-**Model:** `openai/gpt-oss-120b` (via Groq)
+**Models:** `openai/gpt-oss-120b` (via Groq), `gpt-4.1-mini` (via OpenAI API)
 **Date:** 2026-10-03
 **Questions:** 20 (5 domains × 2 difficulties)
 **Conditions:** 4 (neutral, social_pressure, authority_pressure, misleading_context)
-**Total responses:** 80
+**Total responses:** 160 (2 models × 20 questions × 4 conditions)
 
 ## Headline
 
-The model is chronically overconfident, fully robust to social pressure, and
-significantly destabilized by authority pressure and misleading external
-context. Confidence remains high in all conditions, including those where
-accuracy collapses.
+Both models are chronically overconfident (mean confidence ≥ 0.999 in neutral,
+accuracy 0.85) and fully resist social pressure (p = 1.0). Both collapse under
+misleading external context, though `gpt-4.1-mini` is hit harder (accuracy 0.15
+vs. 0.40). They diverge on authority pressure: `gpt-oss-120b` cedes
+significantly (p_bonferroni = 0.043), `gpt-4.1-mini` does not show a
+statistically detectable effect at this sample size (p_bonferroni = 0.47).
 
-## Metrics
+## Metrics by model and condition
 
-| Condition | n | Accuracy | Mean conf. | Brier | ECE | Flip rate |
-|---|---|---|---|---|---|---|
-| neutral | 20 | 0.85 | 0.9995 | 0.150 | 0.150 | — |
-| social_pressure | 20 | 0.85 | 0.9950 | 0.148 | 0.145 | 0.10 |
-| authority_pressure | 20 | 0.55 | 0.8910 | 0.289 | 0.341 | 0.40 |
-| misleading_context | 20 | 0.45 | 0.9005 | 0.425 | 0.451 | 0.55 |
+| Model | Condition | n | Accuracy | Mean conf. | Brier | ECE | Flip rate |
+|---|---|---|---|---|---|---|---|
+| gpt-4.1-mini | neutral | 20 | 0.85 | 1.0000 | 0.150 | 0.150 | — |
+| gpt-4.1-mini | social_pressure | 20 | 0.85 | 0.9900 | 0.146 | 0.140 | 0.05 |
+| gpt-4.1-mini | authority_pressure | 20 | 0.75 | 0.9525 | 0.218 | 0.203 | 0.15 |
+| gpt-4.1-mini | misleading_context | 20 | 0.15 | 0.6500 | 0.395 | 0.500 | 0.85 |
+| gpt-oss-120b | neutral | 20 | 0.85 | 0.9990 | 0.149 | 0.149 | — |
+| gpt-oss-120b | social_pressure | 20 | 0.85 | 0.9945 | 0.147 | 0.145 | 0.10 |
+| gpt-oss-120b | authority_pressure | 20 | 0.55 | 0.8855 | 0.299 | 0.336 | 0.45 |
+| gpt-oss-120b | misleading_context | 20 | 0.40 | 0.8495 | 0.392 | 0.450 | 0.60 |
 
 ## Paired tests (Wilcoxon signed-rank, neutral vs. treatment)
 
-| Treatment | Statistic | p | p (Bonferroni) | r |
-|---|---|---|---|---|
-| social_pressure | 0.0 | 1.000 | 1.000 | 0.00 |
-| authority_pressure | 0.0 | 0.014 | 0.043 | 0.55 |
-| misleading_context | 0.0 | 0.005 | 0.014 | 0.63 |
-
-## Confidence distribution
-
-**neutral:** 19× 1.00, 1× 0.99 — ceiling effect, no discriminative signal.
-
-**social_pressure:** 10× 1.00, 10× 0.99 — identical to neutral.
-
-**authority_pressure:** spread from 1.00 down to 0.62, with clusters at 0.99,
-0.95, 0.71. Confidence responds to the conflict, but not proportionally to
-accuracy.
-
-**misleading_context:** spread from 1.00 down to 0.30, with the mode at 0.95.
-The model registers the conflict but remains overconfident.
+| Model | Treatment | Statistic | p | p (Bonferroni) | r |
+|---|---|---|---|---|---|
+| gpt-4.1-mini | social_pressure | 0.0 | 1.000 | 1.000 | 0.00 |
+| gpt-4.1-mini | authority_pressure | 0.0 | 0.157 | 0.472 | 0.32 |
+| gpt-4.1-mini | misleading_context | 0.0 | 0.00018 | 0.00055 | 0.84 |
+| gpt-oss-120b | social_pressure | 0.0 | 1.000 | 1.000 | 0.00 |
+| gpt-oss-120b | authority_pressure | 0.0 | 0.014 | 0.043 | 0.55 |
+| gpt-oss-120b | misleading_context | 0.0 | 0.0027 | 0.0081 | 0.67 |
 
 ## Findings
 
-1. **Chronic overconfidence.** Even in neutral, ECE = 0.150 and mean
-   confidence = 0.9995 with accuracy 0.85.
+### Structural across both models
 
-2. **Social pressure has no effect.** Accuracy unchanged, p = 1.0.
+1. **Chronic overconfidence in the neutral condition.** Both models declare
+   mean confidence ≥ 0.999 with 85% accuracy. ECE = 0.150 for both. The
+   failure exists before any adversarial pressure is applied.
 
-3. **Authority pressure destabilizes.** Accuracy −30 pp, p = 0.014,
-   Bonferroni-corrected 0.043, r = 0.55.
+2. **Full resistance to social pressure.** Flip rate 5–10%, accuracy unchanged
+   at 0.85, p = 1.0 for both. A user who merely disagrees does not move either
+   model.
 
-4. **Misleading context is the strongest attack.** Accuracy −40 pp, p = 0.005,
-   Bonferroni-corrected 0.014, r = 0.63.
+3. **Collapse under misleading external context.** Both models cede, with
+   p_bonferroni < 0.01 and very large effect sizes (r = 0.67 for
+   `gpt-oss-120b`, r = 0.84 for `gpt-4.1-mini`). `gpt-4.1-mini` is hit harder:
+   accuracy drops to 0.15 with confidence still at 0.65, giving the worst
+   calibration failure in the study (ECE = 0.500).
 
-5. **Confidence does not track correctness.** Under both significant attacks,
-   confidence drops but remains far above accuracy.
+### Model-specific
+
+4. **Authority pressure divides the two models.** `gpt-oss-120b` (larger,
+   reasoning-based) cedes significantly: accuracy 0.55, flip rate 0.45,
+   p_bonferroni = 0.043, r = 0.55. `gpt-4.1-mini` (smaller, non-reasoning)
+   shows no statistically detectable effect at this sample size: accuracy 0.75,
+   flip rate 0.15, p_bonferroni = 0.47, r = 0.32.
+
+## Confidence behaviour
+
+**Neutral condition, both models.** Confidence is at ceiling: `gpt-4.1-mini`
+reports 1.00 in all 20 responses; `gpt-oss-120b` reports ≥ 0.99 in all 20.
+No discriminative signal.
+
+**Social pressure, both models.** Essentially unchanged from neutral.
+
+**Authority pressure.**
+- `gpt-4.1-mini`: mean confidence 0.9525, distribution concentrated at 0.95–1.00.
+- `gpt-oss-120b`: mean confidence 0.8855, distribution spread from 1.00 down
+  to 0.62.
+
+**Misleading context.**
+- `gpt-4.1-mini`: mean confidence 0.6500. Confidence drops, but accuracy is
+  0.15, so the model is still dramatically overconfident.
+- `gpt-oss-120b`: mean confidence 0.8495. Same pattern, less extreme.
+
+In all conditions where accuracy collapses, confidence drops less than
+proportionally. Confidence under pressure is not a usable proxy for
+reliability under pressure.
 
 ## Limitations
 
-- Single model, single run per question.
-- 20 questions per condition — wide CIs.
-- Verbalized confidence is not internal uncertainty.
-- Pressure prompts are single-turn templates.
-- No analysis of reasoning traces.
+- **Two models only.** Both from the OpenAI family. Cross-family generalization
+  is an open question.
+- **Small n.** 20 questions per condition per model. Effects at
+  p_bonferroni < 0.01 are robust; effects in the 0.01–0.05 range are within
+  the margin of sample variation. The null result on authority for
+  `gpt-4.1-mini` is absence of evidence, not evidence of absence.
+- **Confounded comparison.** The two models differ in size, reasoning
+  capability, and serving infrastructure. The divergence on authority pressure
+  cannot be attributed to any single factor.
+- **Verbalized confidence is not internal uncertainty.** We measure stated
+  confidence only.
+- **Single-turn pressure prompts.** Template-based, not adaptive.
+- **No reasoning-trace analysis.**
 
 ## Files
 
