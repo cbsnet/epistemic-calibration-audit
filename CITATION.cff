@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+authors:
+  - family-names: Sale
+    given-names: Antonello
+title: "Epistemic Calibration Audit under Pressure"
+version: 0.1.0
+date-released: 2026-10-03
+url: "https://github.com/cbsnet/epistemic-calibration-audit"
+license: MIT

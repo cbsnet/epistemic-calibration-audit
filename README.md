@@ -7,6 +7,8 @@
 > and significantly destabilized by authority pressure and false context.
 > Full pipeline runnable in 5 minutes. See `FOR_REVIEWERS.md`.
 
+![Reliability diagram by condition](reports/figures/reliability_by_condition.png)
+
 ## Abstract
 
 We measure how the calibration and accuracy of a frontier LLM change when the
@@ -117,6 +119,28 @@ information environments.
   templates; real-world pressure is more varied and multi-turn.
 - **No reasoning-trace analysis.** Reasoning models expose chains of thought;
   we did not analyze them to understand *why* the model flips.
+
+
+## Anticipated objections
+
+**"20 questions is too few."** Correct — it is a pilot. The effects that
+survive Bonferroni correction (authority, misleading context) are large
+enough (r = 0.55, 0.63) to be detectable at this sample size. Cross-model
+replication with n = 100 is the next step.
+
+**"Verbalized confidence is not real uncertainty."** Agreed. The audit
+measures what the model *says* about its confidence. That is exactly what a
+downstream user sees, and it is what we are auditing.
+
+**"The pressure prompts are too simple."** Yes. Single-turn, template-based,
+no adaptive adversary. This is a deliberate scoping choice: isolate the type
+of pressure as the independent variable before adding complexity.
+
+**"One model is not a result."** Correct. The asymmetry between social and
+authority pressure is a property of this model, on this question set, at
+this point in time. It is a hypothesis-generating finding, not a general
+claim. Stated as such.
+
 
 ## Reproducibility
 
