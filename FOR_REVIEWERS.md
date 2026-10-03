@@ -79,4 +79,6 @@ To reproduce the full experiment (including API calls, ~15 min, ~$0.05):
 
 ## Contact
 
-<your email>
+## Repository
+
+https://github.com/cbsnet/epistemic-calibration-audit
