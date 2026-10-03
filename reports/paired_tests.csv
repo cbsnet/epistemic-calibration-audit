@@ -1,0 +1,4 @@
+model,baseline,treatment,statistic,p_value,effect_size_r,p_bonferroni
+openai/gpt-oss-120b,neutral,social_pressure,0.0,1.0,0.0,1.0
+openai/gpt-oss-120b,neutral,authority_pressure,0.0,0.014305878435429648,0.5477225575051661,0.04291763530628895
+openai/gpt-oss-120b,neutral,misleading_context,0.0,0.0046777349810472576,0.632455532033676,0.014033204943141774

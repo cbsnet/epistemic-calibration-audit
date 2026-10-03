@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# Virtual environments
+.env
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Data: exclude scratch/pilot results, keep the final raw results
+data/results/*.jsonl
+!data/results/raw.jsonl
+
+# Reports: exclude rendered HTML, keep CSVs and figures
+reports/*.html
+
+# Personal notes, not for the repo
+_LEGGIMI.txt
+notebooks/
+data/questions_pilot.jsonl
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.venv_broken/

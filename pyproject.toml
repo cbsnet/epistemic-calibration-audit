@@ -1,0 +1,30 @@
+[project]
+name = "epistemic-calibration-audit"
+version = "0.1.0"
+description = "A pilot audit of LLM epistemic robustness under pressure."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pandas>=2.2",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "python-dotenv>=1.0",
+    "tqdm>=4.66",
+    "openai>=1.40",
+    "google-generativeai>=0.7",
+    "groq>=0.9",
+]
+
+[project.optional-dependencies]
+dev = ["jupyter", "nbconvert", "pytest"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

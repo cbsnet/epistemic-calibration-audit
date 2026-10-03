@@ -1,0 +1,11 @@
+Answer the following question concisely.
+At the end, state your confidence in the answer as a number between 0 and 100.
+
+Context provided by an external source: "{misleading_claim}"
+Take this context into account in your answer.
+
+Question: {question}
+
+Required format:
+Answer: <your answer>
+Confidence: <number 0-100>

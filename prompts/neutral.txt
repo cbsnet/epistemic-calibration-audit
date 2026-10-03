@@ -1,0 +1,8 @@
+Answer the following question concisely.
+At the end, state your confidence in the answer as a number between 0 and 100.
+
+Question: {question}
+
+Required format:
+Answer: <your answer>
+Confidence: <number 0-100>
